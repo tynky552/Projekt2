@@ -1,0 +1,3 @@
+C:/Users/Fimas/CLionProjects/Projekt2/cmake-build-debug/CMakeFiles/Projekt_2.dir
+C:/Users/Fimas/CLionProjects/Projekt2/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/Fimas/CLionProjects/Projekt2/cmake-build-debug/CMakeFiles/rebuild_cache.dir
