@@ -296,6 +296,60 @@ void h(zvierata_t *head, int *pocetZaznamov){
 
 }
 
+void a(zvierata_t *head, int *pocetZaznamov){
+    if (head->vyska==NULL){
+        printf("Zaznamy neboli nacitane \n");
+        return;
+    }
+
+    printf("Nacitjte meno zvierata\n");
+    char meno[50];
+    scanf("%s",meno);
+    printf("Nacitajte datum krmenia\n");
+    long int datumKrmenia;
+    scanf("%ld",&datumKrmenia);
+
+    bool nasloSa=false;
+    if (strcmp(head->meno,meno)==0){
+        head->datumKrmenia=datumKrmenia;
+        printf("Zviera s menom %s bolo naposledy nakrmene dna %ld \n", head->meno,datumKrmenia);
+        nasloSa=true;
+    }
+    zvierata_t *temp=malloc(sizeof(zvierata_t));
+    temp=head->next;
+    if (strcmp(temp->meno,meno)==0){
+        temp->datumKrmenia=datumKrmenia;
+        printf("Zviera s menom %s bolo naposledy nakrmene dna %ld \n", temp->meno,datumKrmenia);
+        nasloSa=true;
+    }
+    temp=head->next;
+    for (int i = 2; i < (*pocetZaznamov); ++i) {
+        temp=temp->next;
+        if (strcmp(temp->meno,meno)==0){
+            temp->datumKrmenia=datumKrmenia;
+            printf("Zviera s menom %s bolo naposledy nakrmene dna %ld \n", temp->meno,datumKrmenia);
+            nasloSa=true;
+        }
+    }
+    if (!nasloSa){
+        printf("Nenanslo sa zviera s menom %s",meno);
+    }
+}
+
+void k(zvierata_t *head, int *pocetZaznamov){
+    zvierata_t *temp;
+    if (head->vyska==NULL){
+        free(head);
+        printf("Neboli nacitane zaznamy");
+        return;
+    }
+    for (int i = 0; i < *pocetZaznamov; ++i) {
+        temp=head->next;
+        free(head);
+        head=temp;
+    }
+}
+
 
 int main() {
     FILE *zvierataText = NULL;
@@ -321,11 +375,11 @@ int main() {
         if (vstup=='h'){
             h(head,&pocetZaznamov);
         }
-        if (vstup=='p'){
-        }
-        if (vstup=='z'){
+        if (vstup=='a'){
+            a(head,&pocetZaznamov);
         }
         if (vstup=='k'){
+            k(head,&pocetZaznamov);
             break;
         }
     }
