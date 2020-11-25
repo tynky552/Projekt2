@@ -140,6 +140,106 @@ void v(zvierata_t *head, int *pocetZaznamov){
     }
 }
 
+void p(zvierata_t *head, int *pocetZaznamov){
+    if (head->vyska==NULL){
+        printf("Zaznamy neboli nacitane \n");
+        return;
+    }
+
+    int pozicia;
+    zvierata_t *temporary=malloc(sizeof(zvierata_t));
+    printf("Nacitajte poziciu, cislo od 1 do %d", *pocetZaznamov);
+    scanf("%d", &pozicia);
+    printf("Nacitajte polozky\n");
+    scanf("%s", temporary->meno);
+    scanf("%s",temporary->druh);
+    scanf("%d",&temporary->vyska);
+    scanf("%lf",&temporary->vaha);
+    scanf("%ld",&temporary->datum);
+    scanf("%ld",&temporary->datumKrmenia);
+    scanf("%s",temporary->menoOsetrovatela);
+
+    zvierata_t *temp=malloc(sizeof(zvierata_t));
+    if (pozicia<1 || pozicia>*pocetZaznamov){
+        temp=head->next;
+        for (int i = 2; i < *pocetZaznamov; ++i) {
+            temp=temp->next;
+        }
+        temp->next=temporary;
+        (*pocetZaznamov)++;
+        return;
+    }
+    else {
+        if (pozicia==1){
+            temporary->next=head;
+            head=temporary;
+            (*pocetZaznamov)++;
+            return;
+        }
+        if (pozicia==2){
+            temporary->next=head->next;
+            head->next=temporary;
+            (*pocetZaznamov)++;
+            return;
+        }
+        if (pozicia==3){
+            temp=head->next;
+            temporary->next=temp->next;
+            temp->next=temporary;
+            (*pocetZaznamov)++;
+            return;
+        }
+
+        temp=head->next;
+        for (int i = 3; i < pozicia; ++i) {
+            temp=temp->next;
+        }
+        temporary->next=temp->next;
+        temp->next=temporary;
+        (*pocetZaznamov)++;
+    }
+}
+
+void z(zvierata_t *head, int *pocetZaznamov){
+    if (head->vyska==NULL){
+        printf("Zaznamy neboli nacitane \n");
+        return;
+    }
+
+    char meno[50];
+    printf("Nacitajte meno zvierata\n");
+    scanf("%s",meno);
+
+    if (strcmp(head->meno,meno)==0){
+        printf("Zviera s menom %s bolo vymazane \n", head->meno);
+        head=head->next;
+        (*pocetZaznamov)--;
+        return;
+    }
+    zvierata_t *temp=malloc(sizeof(zvierata_t));
+    temp=head->next;
+    if (strcmp(temp->meno,meno)==0){
+        printf("Zviera s menom %s bolo vymazane \n", temp->meno);
+        head->next=temp->next;
+        (*pocetZaznamov)--;
+        return;
+    }
+    zvierata_t *tempPredosli=malloc(sizeof(zvierata_t));
+    tempPredosli=head->next;
+    for (int i = 2; i < (*pocetZaznamov); ++i) {
+        temp=tempPredosli->next;
+        if (strcmp(temp->meno,meno)==0){
+            printf("Zviera s menom %s bolo vymazane \n", temp->meno);
+            tempPredosli->next=temp->next;
+            (*pocetZaznamov)--;
+            return;
+        }
+        tempPredosli=temp;
+    }
+
+    printf("Nenaslo sa zadane zviera");
+}
+
 
 int main() {
     FILE *zvierataText = NULL;
@@ -156,9 +256,11 @@ int main() {
         if (vstup=='v'){
             v(head,&pocetZaznamov);
         }
-        if (vstup=='n'){
+        if (vstup=='p'){
+            p(head,&pocetZaznamov);
         }
-        if (vstup=='s'){
+        if (vstup=='z'){
+            z(head,&pocetZaznamov);
         }
         if (vstup=='h'){
         }
