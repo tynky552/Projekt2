@@ -24,9 +24,16 @@ zvierata_t *aloccStruct(){
 }
 void n(FILE **zvierataText, zvierata_t *head, int *pocetZaznamov){
 
+//    zvierata_t *temp;
+//    if (head->vyska!=NULL){
+//        for (int i = 0; i < *pocetZaznamov; ++i) {
+//            temp=head->next;
+//            free(head);
+//            head=temp;
+//        }
+//    }
     *pocetZaznamov=0;
     char line[50];
-    zvierata_t tmp;
     *zvierataText=fopen("Zvierata.txt","r");
     if (*zvierataText==NULL){
         printf("Zaznamy neboli nacitane \n");
@@ -37,8 +44,10 @@ void n(FILE **zvierataText, zvierata_t *head, int *pocetZaznamov){
 
     fgets(line,50,*zvierataText);
     fgets(line,50,*zvierataText);
+    line[strlen(line)-1]='\0';
     strcpy(head->meno,line);
     fgets(line,50,*zvierataText);
+    line[strlen(line)-1]='\0';
     strcpy(head->druh,line);
     fgets(line,50,*zvierataText);
     head->vyska=atoi(line);
@@ -49,6 +58,7 @@ void n(FILE **zvierataText, zvierata_t *head, int *pocetZaznamov){
     fgets(line,50,*zvierataText);
     head->datumKrmenia=atol(line);
     fgets(line,50,*zvierataText);
+    line[strlen(line)-1]='\0';
     strcpy(head->menoOsetrovatela,line);
     (*pocetZaznamov)++;
 
@@ -64,8 +74,10 @@ void n(FILE **zvierataText, zvierata_t *head, int *pocetZaznamov){
 
         if (go1){
             fgets(line,50,*zvierataText);
+            line[strlen(line)-1]='\0';
             strcpy(temporary1->meno,line);
             fgets(line,50,*zvierataText);
+            line[strlen(line)-1]='\0';
             strcpy(temporary1->druh,line);
             fgets(line,50,*zvierataText);
             temporary1->vyska=atoi(line);
@@ -76,6 +88,7 @@ void n(FILE **zvierataText, zvierata_t *head, int *pocetZaznamov){
             fgets(line,50,*zvierataText);
             temporary1->datumKrmenia=atol(line);
             fgets(line,50,*zvierataText);
+            line[strlen(line)-1]='\0';
             strcpy(temporary1->menoOsetrovatela,line);
 
             temporary1->next=temporary2;
@@ -83,8 +96,10 @@ void n(FILE **zvierataText, zvierata_t *head, int *pocetZaznamov){
         }
         if (go2){
             fgets(line,50,*zvierataText);
+            line[strlen(line)-1]='\0';
             strcpy(temporary2->meno,line);
             fgets(line,50,*zvierataText);
+            line[strlen(line)-1]='\0';
             strcpy(temporary2->druh,line);
             fgets(line,50,*zvierataText);
             temporary2->vyska=atoi(line);
@@ -95,6 +110,7 @@ void n(FILE **zvierataText, zvierata_t *head, int *pocetZaznamov){
             fgets(line,50,*zvierataText);
             temporary2->datumKrmenia=atol(line);
             fgets(line,50,*zvierataText);
+            line[strlen(line)-1]='\0';
             strcpy(temporary2->menoOsetrovatela,line);
 
             temporary2->next=temporary1;
@@ -104,10 +120,30 @@ void n(FILE **zvierataText, zvierata_t *head, int *pocetZaznamov){
     }while (fgets(line,50,*zvierataText)!=NULL);
 }
 
+void v(zvierata_t *head, int *pocetZaznamov){
+    if (head->vyska==NULL){
+        printf("Zaznamy neboli nacitane \n");
+        return;
+    }
+    zvierata_t *temp;
+    temp=head;
+    for (int i = 0; i < *pocetZaznamov; ++i) {
+        printf("Meno: %s\n",temp->meno);
+        printf("Druh: %s\n",temp->druh);
+        printf("Vyska: %d \n",temp->vyska);
+        printf("Vaha: %g \n",temp->vaha);
+        printf("Datum narodenia: %ld \n",temp->datum);
+        printf("Datum Krmenia: %ld \n",temp->datumKrmenia);
+        printf("Meno osetrovatela: %s\n",temp->menoOsetrovatela);
+        printf("\n");
+        temp=temp->next;
+    }
+}
+
 
 int main() {
     FILE *zvierataText = NULL;
-    zvierata_t head;
+    zvierata_t *head=malloc(sizeof(zvierata_t));
     int pocetZaznamov;
     bool jeAlokovane=false;
     while (true){
@@ -115,21 +151,10 @@ int main() {
         printf("\nNacitajte prikaz\n");
         scanf("%c",&vstup);
         if (vstup=='n'){
-            n(&zvierataText,&head,&pocetZaznamov);
-            zvierata_t temp;
-            temp=head;
-            for (int i = 0; i < pocetZaznamov; ++i) {
-                printf("%s",temp.meno);
-                printf("%s",temp.druh);
-                printf("%d \n",temp.vyska);
-                printf("%g \n",temp.vaha);
-                printf("%ld \n",temp.datum);
-                printf("%ld \n",temp.datumKrmenia);
-                printf("%s",temp.menoOsetrovatela);
-                temp=*temp.next;
-            }
+            n(&zvierataText,head,&pocetZaznamov);
         }
-        if (vstup=='o'){
+        if (vstup=='v'){
+            v(head,&pocetZaznamov);
         }
         if (vstup=='n'){
         }
