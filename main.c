@@ -240,6 +240,62 @@ void z(zvierata_t *head, int *pocetZaznamov){
     printf("Nenaslo sa zadane zviera");
 }
 
+void h(zvierata_t *head, int *pocetZaznamov){
+    if (head->vyska==NULL){
+        printf("Zaznamy neboli nacitane \n");
+        return;
+    }
+
+    printf("Nacitjte do datumu krmenia\n");
+    long int datumKrmenia;
+    scanf("%ld",&datumKrmenia);
+
+    bool boliNakrmene=true;
+    if (head->datumKrmenia<datumKrmenia){
+        printf("Zviera cislo 1\n");
+        printf("Meno: %s\n",head->meno);
+        printf("Druh: %s\n",head->druh);
+        printf("Vyska: %d \n",head->vyska);
+        printf("Vaha: %g \n",head->vaha);
+        printf("Datum narodenia: %ld \n",head->datum);
+        printf("Datum Krmenia: %ld \n",head->datumKrmenia);
+        printf("Meno osetrovatela: %s\n",head->menoOsetrovatela);
+        printf("\n");
+        boliNakrmene=false;
+    }
+    zvierata_t *temp=malloc(sizeof(zvierata_t));
+    temp=head->next;
+    if (temp->datumKrmenia<datumKrmenia){
+        printf("Zviera cislo 2\n");
+        printf("Meno: %s\n",temp->meno);
+        printf("Druh: %s\n",temp->druh);
+        printf("Vyska: %d \n",temp->vyska);
+        printf("Vaha: %g \n",temp->vaha);
+        printf("Datum narodenia: %ld \n",temp->datum);
+        printf("Datum Krmenia: %ld \n",temp->datumKrmenia);
+        printf("Meno osetrovatela: %s\n",temp->menoOsetrovatela);
+        printf("\n");
+        boliNakrmene=false;
+    }
+    for (int i = 2; i < (*pocetZaznamov); ++i) {
+        temp=temp->next;
+        if (temp->datumKrmenia<datumKrmenia){
+            printf("Zviera cislo %d\n", i+1);
+            printf("Meno: %s\n",temp->meno);
+            printf("Druh: %s\n",temp->druh);
+            printf("Vyska: %d \n",temp->vyska);
+            printf("Vaha: %g \n",temp->vaha);
+            printf("Datum narodenia: %ld \n",temp->datum);
+            printf("Datum Krmenia: %ld \n",temp->datumKrmenia);
+            printf("Meno osetrovatela: %s\n",temp->menoOsetrovatela);
+            printf("\n");
+            boliNakrmene=false;
+        }
+    }
+    if (boliNakrmene)printf("Vsetky zvierata boli ku datumu %ld nakrmene\n",datumKrmenia);
+
+}
+
 
 int main() {
     FILE *zvierataText = NULL;
@@ -263,6 +319,7 @@ int main() {
             z(head,&pocetZaznamov);
         }
         if (vstup=='h'){
+            h(head,&pocetZaznamov);
         }
         if (vstup=='p'){
         }
